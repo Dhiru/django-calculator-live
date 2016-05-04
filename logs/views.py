@@ -1,6 +1,9 @@
+import urllib
+
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Max
-from .models import Calculator
+from .models import Calculator, Log
 
 
 def index(request):
@@ -33,3 +36,18 @@ def calculator(request, slug):
         "calculator": calculator,
         "logs": calculator.logs.order_by("-created"),
     })
+
+def log(request, calculator_slug, log_body):
+    """
+    Log a calculation on a particular calculator
+    """
+    print calculator_slug, log_body
+    calculator = get_object_or_404(Calculator, slug=calculator_slug)
+
+    if calculator:
+        log = Log(calculator=calculator, body=log_body)
+        log.save()
+        print log
+
+    # Render the 201 created template
+    return render(request, "201.html")

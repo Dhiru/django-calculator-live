@@ -9,6 +9,7 @@ $(function () {
 		keys[i].onclick = function(e) {
 			// Get the input and button values
 			var input = document.querySelector('.screen');
+			var calculator_slug = document.querySelector('#calculator_slug');
 			var inputVal = input.innerHTML;
 			var btnVal = this.innerHTML;
 
@@ -36,7 +37,7 @@ $(function () {
 
 				decimalAdded = false;
 
-				$.post('/post/', function (data) {
+				$.get('/log/' + calculator_slug.innerHTML + '/' + encodeURIComponent(inputVal + btnVal + input.innerHTML), function (data) {
                 });
 			}
 
