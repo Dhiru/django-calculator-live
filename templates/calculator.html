@@ -33,15 +33,20 @@
     	</div>
     </div>
 
-    <div id="logs">
+    <ul class="timeline" id="logs">
         {% for log in logs %}
-            <div class="log" data-post-id="{{ log.id }}">
-                <h2>{{ log.created|date:"D d M Y H:i" }}</h2>
-                {{ log.html_body }}
-            </div>
+        	<li data-post-id="{{ log.id }}">
+            	<div class="direction-r">
+            		<div class="flag-wrapper">
+        				<span class="flag">{{ log.body }}</span>
+        				<span class="time-wrapper">
+                            <span class="time">{{ log.created|date:"D d M Y H:i" }}</span>
+                        </span>
+            		</div>
+        		</div>
+        	</li>
         {% endfor %}
-    </div>
-
+    </ul>
 {% endblock %}
 
 
@@ -60,13 +65,20 @@
                 console.log("Got message " + message.data);
                 var data = JSON.parse(message.data);
                 // Create the inner content of the log div
-                var content = "<h2>" + data.created + "</h2>" + data.html;
+                var content = '<div class="direction-r">\
+                            	<div class="flag-wrapper">\
+                            		<span class="flag">' + data.html.replace("<p>","").replace("</p>","") + '</span>\
+                            		<span class="time-wrapper">\
+                                        <span class="time">' + data.created + '</span>\
+                                    </span>\
+                            	</div>\
+                               </div>';
                 // See if there's a div to replace it in, or if we should add a new one
-                var existing = $("div[data-log-id=" + data.id + "]");
+                var existing = $("li[data-log-id=" + data.id + "]");
                 if (existing.length) {
                     existing.html(content);
                 } else {
-                    var newdiv = $("<div class='log' data-log-id='" + data.id + "'>" + content + "</div>");
+                    var newdiv = $("<li data-log-id='" + data.id + "'>" + content + "</li>");
                     $("#logs").prepend(newdiv);
                 }
             };
