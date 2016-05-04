@@ -55,6 +55,7 @@ header {
         width: 800px;
         margin: 0 auto;
         font-size: 40px;
+        text-align: center;
     }
 
 /* Body */
@@ -105,7 +106,7 @@ html {
 	width: 325px;
 	height: auto;
 
-	margin: 100px auto;
+	margin: 10px auto;
 	padding: 20px 20px 9px;
 
 	background: #9dd2ea;
