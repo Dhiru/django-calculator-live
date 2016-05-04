@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Live Calculator{% endblock %}
+{% block header_text %}Live Calculator{% endblock %}
+
+{% block content %}
+
+    <p>Currently available calculators (make more in the <a href="/admin">admin</a>):</p>
+
+    {% for calculator in calculators %}
+        <p>
+            <a href="{{ calculator.get_absolute_url }}">{{ calculator.title }}</a>
+        </p>
+    {% empty %}
+        <p class="empty">No calculators yet.</p>
+    {% endfor %}
+
+{% endblock %}

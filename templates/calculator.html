@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}{{ calculator.title }}{% endblock %}
+{% block header_text %}{{ calculator.title }}{% endblock %}
+
+{% block content %}
+    <div id="calculator">
+    	<!-- Screen and clear key -->
+    	<div class="top">
+    		<span class="clear">C</span>
+    		<div class="screen"></div>
+    	</div>
+
+    	<div class="keys">
+    		<!-- operators and other keys -->
+    		<span>7</span>
+    		<span>8</span>
+    		<span>9</span>
+    		<span class="operator">+</span>
+    		<span>4</span>
+    		<span>5</span>
+    		<span>6</span>
+    		<span class="operator">-</span>
+    		<span>1</span>
+    		<span>2</span>
+    		<span>3</span>
+    		<span class="operator">÷</span>
+    		<span>0</span>
+    		<span>.</span>
+    		<span class="eval">=</span>
+    		<span class="operator">x</span>
+    	</div>
+    </div>
+
+    <div id="logs">
+        {% for log in logs %}
+            <div class="log" data-post-id="{{ log.id }}">
+                <h2>{{ log.created|date:"D d M Y H:i" }}</h2>
+                {{ log.html_body }}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+{% block extra_body %}
+    <script>
+        $(function () {
+            // Correctly decide between ws:// and wss://
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + window.location.pathname + "stream/";
+            console.log("Connecting to " + ws_path);
+            var socket = new ReconnectingWebSocket(ws_path);
+
+            // Handle incoming messages
+            socket.onmessage = function(message) {
+                // Decode the JSON
+                console.log("Got message " + message.data);
+                var data = JSON.parse(message.data);
+                // Create the inner content of the log div
+                var content = "<h2>" + data.created + "</h2>" + data.html;
+                // See if there's a div to replace it in, or if we should add a new one
+                var existing = $("div[data-log-id=" + data.id + "]");
+                if (existing.length) {
+                    existing.html(content);
+                } else {
+                    var newdiv = $("<div class='log' data-log-id='" + data.id + "'>" + content + "</div>");
+                    $("#logs").prepend(newdiv);
+                }
+            };
+
+            // Helpful debugging
+            socket.onopen = function() { console.log("Connected to notification socket"); }
+            socket.onclose = function() { console.log("Disconnected to notification socket"); }
+        });
+    </script>
+{% endblock %}
