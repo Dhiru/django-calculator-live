@@ -34,7 +34,7 @@ def calculator(request, slug):
     # keep it updated.
     return render(request, "calculator.html", {
         "calculator": calculator,
-        "logs": calculator.logs.order_by("-created"),
+        "logs": calculator.logs.order_by("-created")[:10],
     })
 
 def log(request, calculator_slug, log_body):

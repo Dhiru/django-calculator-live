@@ -80,6 +80,9 @@
                 } else {
                     var newdiv = $("<li data-log-id='" + data.id + "'>" + content + "</li>");
                     $("#logs").prepend(newdiv);
+                    if($("#logs li").length > 10){
+                        $("#logs li:last").remove();
+                    }
                 }
             };
 
