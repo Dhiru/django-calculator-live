@@ -4,55 +4,135 @@
 {% block header_text %}{{ calculator.title }}{% endblock %}
 
 {% block content %}
-    <div id="calculator_slug" style="display:none;">{{ calculator.slug }}</div>
-    <div id="calculator">
-    	<!-- Screen and clear key -->
-    	<div class="top">
-    		<span class="clear">C</span>
-    		<div class="screen"></div>
-    	</div>
+    <div class=row>
+        <div class="col-md-6">
+            <div id="calculator_slug" style="display:none;">{{ calculator.slug }}</div>
+            <div id="calculator">
+            	<!-- Screen and clear key -->
+            	<div class="top">
+            		<span class="clear">C</span>
+            		<div class="screen"></div>
+            	</div>
 
-    	<div class="keys">
-    		<!-- operators and other keys -->
-    		<span>7</span>
-    		<span>8</span>
-    		<span>9</span>
-    		<span class="operator">+</span>
-    		<span>4</span>
-    		<span>5</span>
-    		<span>6</span>
-    		<span class="operator">-</span>
-    		<span>1</span>
-    		<span>2</span>
-    		<span>3</span>
-    		<span class="operator">÷</span>
-    		<span>0</span>
-    		<span>.</span>
-    		<span class="eval">=</span>
-    		<span class="operator">x</span>
-    	</div>
+            	<div class="keys">
+            		<!-- operators and other keys -->
+            		<span>7</span>
+            		<span>8</span>
+            		<span>9</span>
+            		<span class="operator">+</span>
+            		<span>4</span>
+            		<span>5</span>
+            		<span>6</span>
+            		<span class="operator">-</span>
+            		<span>1</span>
+            		<span>2</span>
+            		<span>3</span>
+            		<span class="operator">÷</span>
+            		<span>0</span>
+            		<span>.</span>
+            		<span class="eval">=</span>
+            		<span class="operator">x</span>
+            	</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <ul class="timeline" id="logs">
+                {% for log in logs %}
+                	<li data-post-id="{{ log.id }}">
+                    	<div class="direction-r">
+                    		<div class="flag-wrapper">
+                				<span class="flag">{{ log.body }}</span>
+                				<span class="time-wrapper">
+                                    <span class="time">{{ log.created|date:"D d M Y H:i" }}</span>
+                                </span>
+                    		</div>
+                		</div>
+                	</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-
-    <ul class="timeline" id="logs">
-        {% for log in logs %}
-        	<li data-post-id="{{ log.id }}">
-            	<div class="direction-r">
-            		<div class="flag-wrapper">
-        				<span class="flag">{{ log.body }}</span>
-        				<span class="time-wrapper">
-                            <span class="time">{{ log.created|date:"D d M Y H:i" }}</span>
-                        </span>
-            		</div>
-        		</div>
-        	</li>
-        {% endfor %}
-    </ul>
 {% endblock %}
 
 
 {% block extra_body %}
     <script>
         $(function () {
+            var keys = document.querySelectorAll('#calculator span');
+
+            // Key press detect
+            $(document).on('keyup',function(evt) {
+                if (evt.keyCode === 8 || evt.keyCode === 46) {
+                    if (typeof keys[0].onclick == "function") {
+                        keys[0].onclick.apply(keys[0]);
+                    }
+                } else if (evt.key === '7') {
+                    if (typeof keys[1].onclick == "function") {
+                        keys[1].onclick.apply(keys[1]);
+                    }
+                } else if (evt.key === '8') {
+                    if (typeof keys[2].onclick == "function") {
+                        keys[2].onclick.apply(keys[2]);
+                    }
+                } else if (evt.key === '9') {
+                    if (typeof keys[3].onclick == "function") {
+                        keys[3].onclick.apply(keys[3]);
+                    }
+                } else if (evt.key === '+') {
+                    if (typeof keys[4].onclick == "function") {
+                        keys[4].onclick.apply(keys[4]);
+                    }
+                } else if (evt.key === '4') {
+                    if (typeof keys[5].onclick == "function") {
+                        keys[5].onclick.apply(keys[5]);
+                    }
+                } else if (evt.key === '5') {
+                    if (typeof keys[6].onclick == "function") {
+                        keys[6].onclick.apply(keys[6]);
+                    }
+                } else if (evt.key === '6') {
+                    if (typeof keys[7].onclick == "function") {
+                        keys[7].onclick.apply(keys[7]);
+                    }
+                } else if (evt.key === '-') {
+                    if (typeof keys[8].onclick == "function") {
+                        keys[8].onclick.apply(keys[8]);
+                    }
+                } else if (evt.key === '1') {
+                    if (typeof keys[9].onclick == "function") {
+                        keys[9].onclick.apply(keys[9]);
+                    }
+                } else if (evt.key === '2') {
+                    if (typeof keys[10].onclick == "function") {
+                        keys[10].onclick.apply(keys[10]);
+                    }
+                } else if (evt.key === '3') {
+                    if (typeof keys[11].onclick == "function") {
+                        keys[11].onclick.apply(keys[11]);
+                    }
+                } else if (evt.key === '/' || evt.key === '÷') {
+                    if (typeof keys[12].onclick == "function") {
+                        keys[12].onclick.apply(keys[12]);
+                    }
+                } else if (evt.key === '0') {
+                    if (typeof keys[13].onclick == "function") {
+                        keys[13].onclick.apply(keys[13]);
+                    }
+                } else if (evt.key === '.') {
+                    if (typeof keys[14].onclick == "function") {
+                        keys[14].onclick.apply(keys[14]);
+                    }
+                } else if (evt.key === '=' || evt.keyCode === 13) {
+                    if (typeof keys[15].onclick == "function") {
+                        keys[15].onclick.apply(keys[15]);
+                    }
+                } else if (evt.key === '*' || evt.key === 'x') {
+                    if (typeof keys[16].onclick == "function") {
+                        keys[16].onclick.apply(keys[16]);
+                    }
+                }
+            });
+
             // Correctly decide between ws:// and wss://
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             var ws_path = ws_scheme + '://' + window.location.host + window.location.pathname + "stream/";

@@ -84,8 +84,10 @@ $(function () {
 				input.innerHTML += btnVal;
 			}
 
-			// prevent page jumps
-			e.preventDefault();
+			if(typeof e != "undefined" && e != null){
+				// prevent page jumps
+				e.preventDefault();
+			}
 		}
 	}
 });
