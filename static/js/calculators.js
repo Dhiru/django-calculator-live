@@ -32,12 +32,14 @@ $(function () {
 				if(operators.indexOf(lastChar) > -1 || lastChar == '.')
 					equation = equation.replace(/.$/, '');
 
-				if(equation)
+				if(equation && eval(equation) % 1 != 0)
 					input.innerHTML = eval(equation).toFixed(2);
+				else if(equation)
+					input.innerHTML = eval(equation);
 
 				decimalAdded = false;
 
-				$.get('/log/' + calculator_slug.innerHTML + '/' + encodeURIComponent(inputVal + btnVal + input.innerHTML), function (data) {
+				$.get('/log/' + calculator_slug.innerHTML + '/' + encodeURIComponent(equation + btnVal + eval(equation)), function (data) {
                 });
 			}
 
@@ -69,6 +71,33 @@ $(function () {
 				}
 
 				decimalAdded =false;
+
+				var operatorCount = 0;
+				for(var i=0; i < operators.length; i++){
+					for(var j=0; j < input.innerHTML.length; j++){
+						if(operators[i] == input.innerHTML[j]){
+							operatorCount++;
+						}
+					}
+				}
+
+				try {
+					var equation = input.innerHTML;
+					var lastChar = equation[equation.length - 1];
+					equation = equation.replace(/.$/, '');
+					if(operatorCount >= 2){
+						equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
+						if(equation && eval(equation) % 1 != 0)
+							input.innerHTML = eval(equation).toFixed(2) + lastChar;
+						else if(equation)
+							input.innerHTML = eval(equation) + lastChar;
+						decimalAdded = false;
+						$.get('/log/' + calculator_slug.innerHTML + '/' + encodeURIComponent(equation + "=" + eval(equation)), function (data) {
+		                });
+					}
+				}
+			    catch (e) { }
+
 			}
 
 			// Now only the decimal problem is left. We can solve it easily using a flag 'decimalAdded' which we'll set once the decimal is added and prevent more decimals to be added once it's set. It will be reset when an operator, eval or clear key is pressed.
