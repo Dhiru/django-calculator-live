@@ -33,7 +33,7 @@ $(function () {
 					equation = equation.replace(/.$/, '');
 
 				if(equation)
-					input.innerHTML = eval(equation);
+					input.innerHTML = eval(equation).toFixed(2);
 
 				decimalAdded = false;
 
